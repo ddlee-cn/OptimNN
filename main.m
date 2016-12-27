@@ -48,16 +48,20 @@ costFunction = @(p) nnCostFunction(p, ...
 
 
 % L-BFGS method
-[nn_params, cost,  it] = lbfgs(costFunction, initial_nn_params, options);
+% [nn_params, cost,  it] = lbfgs(costFunction, initial_nn_params, options);
 
 
 % SGD method
-% costFunction = @(p, Xp, yp) nnCostFunction(p, ...
-%                                    input_layer_size, ...
-%                                    hidden_layer_size, ...
-%                                    num_labels, Xp, yp, lambda);
+costFunction = @(p, Xp, yp) nnCostFunction(p, ...
+                                   input_layer_size, ...
+                                   hidden_layer_size, ...
+                                   num_labels, Xp, yp, lambda);
 
-% [nn_params, cost, it] = sgd(costFunction, initial_nn_params, TrainImg, TrainLbl, options);
+options.epochs = 3;
+options.minibatch=200;
+options.lrnrate = 0.1;
+options.momentum=0.95;
+[nn_params, cost, it] = sgd(costFunction, initial_nn_params, TrainImg, TrainLbl, options);
 
 %% ================= Implement Predict =================
 simcalerr = @(p) calerr(p, ...
