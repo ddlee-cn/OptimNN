@@ -44,11 +44,11 @@ costFunction = @(p) nnCostFunction(p, ...
 % Different minimization methods
 
 % Built-in fmincg function
-[nn_params, cost, it] = fmincg(costFunction, initial_nn_params, options);
+% [nn_params, cost, it] = fmincg(costFunction, initial_nn_params, options);
 
 
 % L-BFGS method
-% [nn_params, cost,  it] = lbfgs(costFunction, initial_nn_params, options);
+[nn_params, cost,  it] = lbfgs(costFunction, initial_nn_params, options);
 
 % SGD method
 % costFunction = @(p, Xp, yp) nnCostFunction(p, ...

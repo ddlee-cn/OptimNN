@@ -51,7 +51,7 @@ function [x, f, it] = lbfgs(fun, x0, options)
             return;
         end
         % generate report
-        disp([sprintf('%3d',it), sprintf('  %12.4f',fn)]);
+        fprintf('Cost on iteration %d | %f\n',it,fn)
 
     end
 end
