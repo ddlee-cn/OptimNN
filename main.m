@@ -32,7 +32,7 @@ initial_nn_params = [initial_Theta1(:) ; initial_Theta2(:)];
 
 %% ================= Training =================
 % Set Parameter lambda
-lambda = 10;
+lambda = 1;
 options = optimset('MaxIter', 50);
 
 % Create function handle for the cost function to be minimized
@@ -48,20 +48,20 @@ costFunction = @(p) nnCostFunction(p, ...
 
 
 % L-BFGS method
-% [nn_params, cost,  it] = lbfgs(costFunction, initial_nn_params, options);
-
+[nn_params, cost,  it] = lbfgs(costFunction, initial_nn_params, options);
 
 % SGD method
-costFunction = @(p, Xp, yp) nnCostFunction(p, ...
-                                   input_layer_size, ...
-                                   hidden_layer_size, ...
-                                   num_labels, Xp, yp, lambda);
+% costFunction = @(p, Xp, yp) nnCostFunction(p, ...
+%                                    input_layer_size, ...
+%                                    hidden_layer_size, ...
+%                                    num_labels, Xp, yp, lambda);
 
-options.epochs = 3;
-options.minibatch=200;
-options.lrnrate = 0.1;
-options.momentum=0.95;
-[nn_params, cost, it] = sgd(costFunction, initial_nn_params, TrainImg, TrainLbl, options);
+% options.epochs = 6;
+% options.minibatch=1000;
+% options.lrnrate = 0.1;
+% options.momentum=0.95;
+% options.momIncrease=20;
+% [nn_params, cost, it] = sgd(costFunction, initial_nn_params, TrainImg, TrainLbl, options);
 
 %% ================= Implement Predict =================
 simcalerr = @(p) calerr(p, ...

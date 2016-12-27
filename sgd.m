@@ -5,12 +5,15 @@ function [xstar, f, it] = sgd(fun, x0, dt, lb, options)
     if ~isfield(options,'momentum')
         options.momentum = 0.9;
     end;
+    if ~isfield(options,'momIncrease')
+        options.momIncrease = 20;
+    end;
     % setup
     epochs = options.epochs;
     lrnrate = options.lrnrate;
     minibatch = options.minibatch;
+    momIncrease = options.momIncrease;
     mom = 0.5;
-    momIncrease = 20;
     velocity = zeros(size(x0));
     % init
     it = 0;
@@ -43,4 +46,6 @@ function [xstar, f, it] = sgd(fun, x0, dt, lb, options)
     end
     xstar = x0;
     f = cost;
+    fprintf('Epoch %d | Minibatch %d | Learn Rate %f | MomIncrease %d', ...
+                         epochs, minibatch, options.lrnrate, momIncrease)
 end
