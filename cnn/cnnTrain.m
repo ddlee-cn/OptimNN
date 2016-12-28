@@ -90,12 +90,12 @@ end;
 %                       numFilters,poolDim),theta,images,labels,options);
 
 options.MaxIter = 50;
-opttheta = fmincg(@(p) cnnCost(p, images, labels, numClasses, filterDim,...
-                               numFilters, poolDim), theta);
+% opttheta = fmincg(@(p) cnnCost(p, images, labels, numClasses, filterDim,...
+%                                numFilters, poolDim), theta);
 
 
-% opttheta = lbfgs(@(p) cnnCost(p, images, labels, numClasses, filterDim,...
-%                                numFilters, poolDim), theta, options);
+opttheta = lbfgs(@(p) cnnCost(p, images, labels, numClasses, filterDim,...
+                               numFilters, poolDim), theta, options);
 %%======================================================================
 %% STEP 4: Test
 %  Test the performance of the trained model using the MNIST test set. Your
