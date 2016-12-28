@@ -21,10 +21,15 @@ poolDim = 2;      % Pooling dimension, (should divide imageDim-filterDim+1)
 
 % Load MNIST Train
 images = loadMNISTImages('../Data/original/train-images.idx3-ubyte');
-images = reshape(images,imageDim,imageDim,[]);
 labels = loadMNISTLabels('../Data/original/train-labels.idx1-ubyte');
 labels(labels==0) = 10; % Remap 0 to 10
 
+% shrink dataset for 2-order methods
+rperm = randperm(60000);
+images = images(:,rperm(1:1000));
+labels = labels(rperm(1:1000));
+
+images = reshape(images,imageDim,imageDim,[]);
 % Initialize Parameters
 theta = cnnInitParams(imageDim,filterDim,numFilters,poolDim,numClasses);
 
@@ -76,24 +81,36 @@ end;
 %% STEP 3: Learn Parameters
 %  Implement minFuncSGD.m, then train the model.
 
-options.epochs = 3;
-options.minibatch = 256;
-options.alpha = 1e-1;
-options.momentum = .95;
+% options.epochs = 3;
+% options.minibatch = 256;
+% options.alpha = 1e-1;
+% options.momentum = .95;
 
-opttheta = minFuncSGD(@(x,y,z) cnnCost(x,y,z,numClasses,filterDim,...
-                      numFilters,poolDim),theta,images,labels,options);
+% opttheta = minFuncSGD(@(x,y,z) cnnCost(x,y,z,numClasses,filterDim,...
+%                       numFilters,poolDim),theta,images,labels,options);
 
+options.MaxIter = 50;
+opttheta = fmincg(@(p) cnnCost(p, images, labels, numClasses, filterDim,...
+                               numFilters, poolDim), theta);
+
+
+% opttheta = lbfgs(@(p) cnnCost(p, images, labels, numClasses, filterDim,...
+%                                numFilters, poolDim), theta, options);
 %%======================================================================
 %% STEP 4: Test
 %  Test the performance of the trained model using the MNIST test set. Your
 %  accuracy should be above 97% after 3 epochs of training
 
 testImages = loadMNISTImages('../Data/original/t10k-images.idx3-ubyte');
-testImages = reshape(testImages,imageDim,imageDim,[]);
 testLabels = loadMNISTLabels('../Data/original/t10k-labels.idx1-ubyte');
 testLabels(testLabels==0) = 10; % Remap 0 to 10
 
+% shrink dataset
+rperm = randperm(10000);
+testImages = testImages(:,rperm(1:500));
+testLabels = testLabels(rperm(1:500));
+
+testImages = reshape(testImages,imageDim,imageDim,[]);
 [~,cost,preds]=cnnCost(opttheta,testImages,testLabels,numClasses,...
                 filterDim,numFilters,poolDim,true);
 
