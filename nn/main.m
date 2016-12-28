@@ -10,7 +10,7 @@ num_labels = 10;          % 10 labels, from 1 to 10
 % Load Training Data
 fprintf('Loading and Visualizing Data ...\n')
 
-load('./Data/mnistdata.mat');
+load('../Data/mnistdata.mat');
 
 
 % % % Randomly select 100 data points to display
