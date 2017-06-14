@@ -15,3 +15,5 @@ SGD: 3% error
 L-BFGS: 11% error(long runtime, 10% data)
 
 Line search with CG: 12% error(long runtime, 10% data)
+
+![error-iter](./pictures/CG-BFGS(Iteration).png)
